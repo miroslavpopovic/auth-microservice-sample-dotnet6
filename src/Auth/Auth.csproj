@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Duende.IdentityServer" Version="6.0.0-preview.1" />
         <PackageReference Include="MailKit" Version="2.15.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0-rc.1.21452.15" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0-rc.1.21452.15" />
@@ -15,6 +16,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-rc.1.21452.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-rc.1.21452.10" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0-rc.1.21464.1" />
+        <PackageReference Include="System.Collections.Immutable" Version="6.0.0-rc.1.21451.13" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Auth;
 using Auth.Data;
 using Auth.Email;
 
@@ -21,6 +21,25 @@ builder.Services.AddDefaultIdentity<AuthUser>(options => options.SignIn.RequireC
 builder.Services.AddEmail(builder.Configuration);
 builder.Services.AddRazorPages();
 
+builder.Services.AddIdentityServer()
+    .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddInMemoryClients(Config.Clients);
+
+// CORS policy to allow SwaggerUI client
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            "default", policy =>
+            {
+                policy
+                    .WithOrigins("https://localhost:7212")
+                    //.WithOrigins(Configuration.GetServiceUri("aurelia-client")!.ToString().TrimEnd('/'))
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,8 +58,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors("default");
 
-app.UseAuthentication();
+app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapRazorPages();
