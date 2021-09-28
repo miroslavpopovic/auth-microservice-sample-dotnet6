@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Auth;
 using Auth.Data;
 using Auth.Email;
+using Duende.IdentityServer;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +26,38 @@ builder.Services.AddEmail(builder.Configuration);
 builder.Services.AddRazorPages();
 
 builder.Services.AddIdentityServer()
+    .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryClients(Config.Clients);
+    .AddInMemoryClients(Config.Clients)
+    .AddAspNetIdentity<AuthUser>();
+
+builder.Services.AddAuthentication()
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+        // We are leaving the default auth scheme
+        //options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+        options.ClientId = builder.Configuration["Providers:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Providers:Google:ClientSecret"];
+    })
+    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, "Demo IdentityServer", options =>
+    {
+        // We are leaving the default auth scheme
+        //options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+        //options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+        options.SaveTokens = true;
+
+        options.Authority = "https://demo.duendesoftware.com";
+        options.ClientId = builder.Configuration["Providers:IdentityServerDemo:ClientId"];
+        options.ClientSecret = builder.Configuration["Providers:IdentityServerDemo:ClientSecret"];
+        options.ResponseType = "code";
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = "name",
+            RoleClaimType = "role"
+        };
+    });
 
 // CORS policy to allow SwaggerUI client
 builder.Services.AddCors(

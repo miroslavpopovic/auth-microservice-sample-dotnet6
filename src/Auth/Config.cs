@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 
 namespace Auth;
 
@@ -7,8 +8,15 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("weather-api", "Weather API")
+            new ApiScope("weather-api", "Weather API"),
+            new ApiScope("weather-summary-api", "Weather Summary API")
         };
+
+    public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>
+    {
+        new IdentityResources.OpenId(),
+        new IdentityResources.Profile()
+    };
 
     public static IEnumerable<Client> Clients =>
         new List<Client>
@@ -41,6 +49,65 @@ public static class Config
 
                 // scopes that client has access to
                 AllowedScopes = { "weather-api" }
-            }
+            },
+
+            // Machine to machine client
+            new Client
+            {
+                ClientId = "weather-summary-api-console-client",
+
+                // secret for authentication
+                ClientSecrets = { new Secret("secret".Sha256()) },
+
+                // no interactive user, use the clientid/secret for authentication
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                // scopes that client has access to
+                AllowedScopes = { "weather-summary-api" }
+            },
+
+            // Machine to machine client
+            new Client
+            {
+                ClientId = "weather-apis-client",
+
+                // secret for authentication
+                ClientSecrets = { new Secret("secret".Sha256()) },
+
+                // no interactive user, use the clientid/secret for authentication
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                // scopes that client has access to
+                AllowedScopes = { "weather-api", "weather-summary-api" }
+            },
+
+            // Interactive web client that's using ASP.NET Core MVC
+            new Client
+            {
+                ClientId = "weather-api-mvc-client",
+                
+                // secret for authentication
+                ClientSecrets = { new Secret("secret".Sha256()) },
+
+                AllowedGrantTypes = GrantTypes.Code,
+                RequireConsent = true,
+                RequirePkce = true,
+
+                // where to redirect to after login
+                RedirectUris = { "https://localhost:7214/signin-oidc" },
+
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { "https://localhost:7214/signout-callback-oidc" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "weather-api",
+                    "weather-summary-api"
+                },
+
+                AllowOfflineAccess = true
+            },
         };
 }
