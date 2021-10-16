@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Auth;
 using Auth.Data;
 using Auth.Email;
-using Duende.IdentityServer;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -26,9 +24,15 @@ builder.Services.AddEmail(builder.Configuration);
 builder.Services.AddRazorPages();
 
 builder.Services.AddIdentityServer()
-    .AddInMemoryIdentityResources(Config.IdentityResources)
-    .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryClients(Config.Clients)
+    //.AddInMemoryIdentityResources(Config.IdentityResources)
+    //.AddInMemoryApiScopes(Config.ApiScopes)
+    //.AddInMemoryClients(Config.Clients)
+    .AddConfigurationStore(options =>
+    {
+        options.ConfigureDbContext = builder => builder.UseSqlServer(
+            connectionString,
+            sql => sql.MigrationsAssembly(typeof(Program).Assembly.GetName().Name));
+    })
     .AddAspNetIdentity<AuthUser>();
 
 builder.Services.AddAuthentication()
@@ -75,6 +79,8 @@ builder.Services.AddCors(
     });
 
 var app = builder.Build();
+
+Auth.Config.InitializeDatabase(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
