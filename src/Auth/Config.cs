@@ -1,4 +1,4 @@
-﻿using Duende.IdentityServer;
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
 namespace Auth;
@@ -109,5 +109,28 @@ public static class Config
 
                 AllowOfflineAccess = true
             },
+
+            new Client
+            {
+                ClientId = "bff-client",
+                
+                // secret for authentication
+                ClientSecrets = { new Secret("secret".Sha256()) },
+
+                AllowedGrantTypes = GrantTypes.Code,
+
+                // where to redirect to after login
+                RedirectUris = { "https://localhost:7215/signin-oidc" },
+
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { "https://localhost:7215/signout-callback-oidc" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "weather-api"
+                }
+            }
         };
 }

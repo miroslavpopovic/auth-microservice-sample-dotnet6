@@ -67,7 +67,7 @@ builder.Services.AddCors(
             "default", policy =>
             {
                 policy
-                    .WithOrigins("https://localhost:7212")
+                    .WithOrigins("https://localhost:7212", "https://localhost:7213")
                     //.WithOrigins(Configuration.GetServiceUri("aurelia-client")!.ToString().TrimEnd('/'))
                     .AllowAnyHeader()
                     .AllowAnyMethod();

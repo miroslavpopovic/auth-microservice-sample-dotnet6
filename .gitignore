@@ -353,3 +353,6 @@ MigrationBackup/
 src/Auth/wwwroot/images/profile/
 .tye/
 .data/
+
+# Temporary remove Aurelia Client
+src/Samples.WeatherApi.AureliaClient/
