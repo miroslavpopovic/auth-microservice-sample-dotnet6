@@ -1,4 +1,4 @@
-using Duende.IdentityServer;
+﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
 namespace Auth;
@@ -124,6 +124,25 @@ public static class Config
 
                 // where to redirect to after logout
                 PostLogoutRedirectUris = { "https://localhost:7215/signout-callback-oidc" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "weather-api"
+                }
+            },
+            
+            new Client
+            {
+                ClientId = "wpf-client",
+                ClientName = "WPF Client",
+
+                AllowedGrantTypes = GrantTypes.DeviceFlow,
+                RequireClientSecret = false,
+
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AllowOfflineAccess = true,
 
                 AllowedScopes =
                 {

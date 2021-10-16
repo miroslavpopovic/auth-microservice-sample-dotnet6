@@ -4,7 +4,7 @@
     ViewData["Title"] = "Device authorization";
 }
 
-@if (string.IsNullOrWhiteSpace(Model.Model.UserCode))
+@if (string.IsNullOrWhiteSpace(Model.Model?.UserCode))
 {
     <div class="page-device-code">
         <div class="lead">
@@ -64,10 +64,9 @@ else
             <div class="col-sm-8">
 
                 <form asp-page="/Device/Success" class="consent-form" method="post">
-                    <input asp-for="Model.UserCode" type="hidden" value="@Model.Model.UserCode" />
+                    <input asp-for="Model.UserCode!" type="hidden" value="@Model.Model.UserCode" />
 
-
-                    @if (Model.Model.IdentityScopes.Any())
+                    @if (Model.Model.IdentityScopes!.Any())
                     {
                         <div class="card consent-buttons">
                             <div class="card-header">
@@ -75,7 +74,7 @@ else
                                 Personal Information
                             </div>
                             <ul class="list-group">
-                                @foreach (var scope in Model.Model.IdentityScopes)
+                                @foreach (var scope in Model.Model.IdentityScopes!)
                                 {
                                     <partial name="_ScopeListItem" model="@scope" />
                                 }
@@ -83,7 +82,7 @@ else
                         </div>
                     }
 
-                    @if (Model.Model.ApiScopes.Any())
+                    @if (Model.Model.ApiScopes!.Any())
                     {
                         <div class="card">
                             <div class="card-header">
@@ -91,7 +90,7 @@ else
                                 Application Access
                             </div>
                             <ul class="list-group">
-                                @foreach (var scope in Model.Model.ApiScopes)
+                                @foreach (var scope in Model.Model.ApiScopes!)
                                 {
                                     <partial name="_ScopeListItem" model="scope" />
                                 }
@@ -103,7 +102,7 @@ else
                     {
                         <div class="consent-remember">
                             <label>
-                                <input class="consent-scopecheck" asp-for="Model.RememberConsent" />
+                                <input class="consent-scopecheck" asp-for="Model.RememberConsent!" />
                                 <strong>Remember My Decision</strong>
                             </label>
                         </div>
