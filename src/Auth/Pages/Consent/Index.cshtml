@@ -13,12 +13,12 @@ else
 <div class="page-consent">
     <div class="lead">
         <div class="col-sm-10">
-            @if (Model.Model.ClientLogoUrl != null)
+            @if (Model.Model?.ClientLogoUrl != null)
             {
                 <div class="client-logo"><img src="@Model.Model.ClientLogoUrl"></div>
             }
             <h1>
-                @Model.Model.ClientName
+                @Model.Model?.ClientName
                 <small class="text-muted">is requesting your permission</small>
             </h1>
             <p>Uncheck the permissions you do not wish to grant.</p>
@@ -32,11 +32,11 @@ else
     </div>
 
     <form asp-page="/Consent/Index" class="consent-form">
-        <input type="hidden" asp-for="Model.ReturnUrl" />
+        <input type="hidden" asp-for="Model!.ReturnUrl" />
 
         <div class="row">
             <div class="col-sm-8">
-                @if (Model.Model.IdentityScopes.Any())
+                @if (Model.Model!.IdentityScopes!.Any())
                 {
                     <div class="form-group">
                         <div class="card">
@@ -45,7 +45,7 @@ else
                                 Personal Information
                             </div>
                             <ul class="list-group list-group-flush">
-                                @foreach (var scope in Model.Model.IdentityScopes)
+                                @foreach (var scope in Model.Model.IdentityScopes!)
                                 {
                                     <partial name="_ScopeListItem" model="@scope" />
                                 }
@@ -54,7 +54,7 @@ else
                     </div>
                 }
 
-                @if (Model.Model.ApiScopes.Any())
+                @if (Model.Model.ApiScopes!.Any())
                 {
                     <div class="form-group">
                         <div class="card">
@@ -63,7 +63,7 @@ else
                                 Application Access
                             </div>
                             <ul class="list-group">
-                                @foreach (var scope in Model.Model.ApiScopes)
+                                @foreach (var scope in Model.Model.ApiScopes!)
                                 {
                                     <partial name="_ScopeListItem" model="scope" />
                                 }
@@ -79,7 +79,7 @@ else
                             Description
                         </div>
                         <div class="card-body">
-                            <input class="form-control" placeholder="Description or name of device" asp-for="Model.Description" autofocus>
+                            <input class="form-control" placeholder="Description or name of device" asp-for="Model!.Description" autofocus>
                         </div>
                     </div>
                 </div>
@@ -88,8 +88,8 @@ else
                 {
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" asp-for="Model.RememberConsent"/>
-                            <label class="form-check-label" asp-for="Model.RememberConsent">
+                            <input class="form-check-input" asp-for="Model!.RememberConsent"/>
+                            <label class="form-check-label" asp-for="Model!.RememberConsent">
                                 <strong>Remember My Decision</strong>
                             </label>
                         </div>

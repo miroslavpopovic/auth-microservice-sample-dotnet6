@@ -1,3 +1,4 @@
+using Auth;
 using Microsoft.EntityFrameworkCore;
 using Auth.Data;
 using Auth.Email;
@@ -12,9 +13,9 @@ var connectionString = builder.Configuration.GetConnectionString("auth-db");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString, builder =>
+    options.UseSqlServer(connectionString, optionsBuilder =>
     {
-        builder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+        optionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
     }));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -29,9 +30,9 @@ builder.Services.AddIdentityServer()
     //.AddInMemoryClients(Config.Clients)
     .AddConfigurationStore(options =>
     {
-        options.ConfigureDbContext = builder => builder.UseSqlServer(
+        options.ConfigureDbContext = optionsBuilder => optionsBuilder.UseSqlServer(
             connectionString,
-            sql => sql.MigrationsAssembly(typeof(Program).Assembly.GetName().Name));
+            sql => sql.MigrationsAssembly(typeof(Config).Assembly.GetName().Name));
     })
     .AddAspNetIdentity<AuthUser>();
 
@@ -80,7 +81,7 @@ builder.Services.AddCors(
 
 var app = builder.Build();
 
-Auth.Config.InitializeDatabase(app);
+Config.InitializeDatabase(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

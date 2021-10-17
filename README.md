@@ -22,7 +22,7 @@ The next thing was adding and configuring Duende IdentityServer, by following [q
 
 ### Auth.Admin
 
-An ASP.NET Core application that contains administration for Duende IdentityServer clients and resources, which are saved to SQL Server database.
+An ASP.NET Core application that contains administration for Duende IdentityServer clients and scopes, which are saved to SQL Server database. This project is heavily influenced by [Skoruba.DuendeIdentityServer.Admin project](https://github.com/skoruba/Duende.IdentityServer.Admin)
 
 ### WeatherApi and WeatherSummaryApi
 
@@ -40,11 +40,9 @@ A .NET worker service client for WeatherApi. Demonstrates the usage of IdentityM
 
 An ASP.NET Core application which demonstrates several different ways of using access tokens to access protected resources (APIs).
 
-### AureliaClient
+### JavaScriptBffClient
 
-*TODO: Create this project to use BFF*
-
-A combination of ASP.NET Core backend and Aurelia frontend app demonstrating usage of [`oidc-client`](https://github.com/IdentityModel/oidc-client-js). Note that this approach is not recommended. For alternatives, check the latest "best current practice" on [OAuth 2.0 for Browser-Based Apps](https://datatracker.ietf.org/doc/draft-ietf-oauth-browser-based-apps/?include_text=1).
+A combination of ASP.NET Core backend and JavaScript frontend app demonstrating usage of [BFF Security Framework](https://docs.duendesoftware.com/identityserver/v5/bff/). Note that this approach is [recommended for browser based apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps). Another approach would be to do all the security interactions on client-side code, which ends in more complex JavaScript and considerably higher attach surface. It is discouraged for applications dealing with sensitive data. Read more about it in [Duende IdentityServer documentation](https://docs.duendesoftware.com/identityserver/v5/quickstarts/js_clients/).
 
 ### WpfClient
 
@@ -118,7 +116,7 @@ It will run all the projects and services defined in `./tye.yaml` and serve a da
 
 ### Using Kestrel or IISExpress
 
-_Note: The solution contains multiple web projects, configured to run on specific ports. HTTPS addresses with ports are hard-coded throughout the code, for auth URLs and. The same ports are configured for both IISExpress and Kestrel, so you can use either.
+*Note: The solution contains multiple web projects, configured to run on specific ports. HTTPS addresses with ports are hard-coded throughout the code, for auth URLs and. The same ports are configured for both IISExpress and Kestrel, so you can use either.*
 
 If using Visual Studio 2019+, you can open `Auth.sln` solution. To run multiple projects, right click on the solution in Solution Explorer and choose "Set StartUp Projects...". Select "Multiple" and pick the ones you want to start.
 
@@ -128,7 +126,7 @@ If running from the command line, you can start the projects you need from the r
     dotnet run --project src\Auth.Admin\Auth.Admin.csproj
     dotnet run --project src\Samples.WeatherApi\Samples.WeatherApi.csproj
     dotnet run --project src\Samples.WeatherSummaryApi\Samples.WeatherSummaryApi.csproj
-    dotnet run --project src\Samples.WeatherApi.AureliaClient\Samples.WeatherApi.AureliaClient.csproj
+    dotnet run --project src\Samples.WeatherApi.JavaScriptBffClient\Samples.WeatherApi.JavaScriptBffClient.csproj
     dotnet run --project src\Samples.WeatherApi.ConsoleClient\Samples.WeatherApi.ConsoleClient.csproj
     dotnet run --project src\Samples.WeatherApi.MvcClient\Samples.WeatherApi.MvcClient.csproj
     dotnet run --project src\Samples.WeatherApi.WorkerClient\Samples.WeatherApi.WorkerClient.csproj

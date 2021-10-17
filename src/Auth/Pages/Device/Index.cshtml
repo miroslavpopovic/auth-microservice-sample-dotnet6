@@ -64,7 +64,7 @@ else
             <div class="col-sm-8">
 
                 <form asp-page="/Device/Success" class="consent-form" method="post">
-                    <input asp-for="Model.UserCode!" type="hidden" value="@Model.Model.UserCode" />
+                    <input asp-for="Model!.UserCode!" type="hidden" value="@Model.Model.UserCode" />
 
                     @if (Model.Model.IdentityScopes!.Any())
                     {
@@ -102,7 +102,7 @@ else
                     {
                         <div class="consent-remember">
                             <label>
-                                <input class="consent-scopecheck" asp-for="Model.RememberConsent!" />
+                                <input class="consent-scopecheck" asp-for="Model!.RememberConsent" />
                                 <strong>Remember My Decision</strong>
                             </label>
                         </div>

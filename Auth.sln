@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.WeatherApi.JavaScri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.WeatherApi.WpfClient", "src\Samples.WeatherApi.WpfClient\Samples.WeatherApi.WpfClient.csproj", "{571EEDA9-3129-4FD4-BA63-60CCFF452854}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Admin", "src\Auth.Admin\Auth.Admin.csproj", "{84F578FD-5EB2-4442-89A5-DC629B9891CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{571EEDA9-3129-4FD4-BA63-60CCFF452854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{571EEDA9-3129-4FD4-BA63-60CCFF452854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{571EEDA9-3129-4FD4-BA63-60CCFF452854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,15 +14,15 @@ namespace Samples.WeatherApi.WpfClient;
 /// <summary>
 /// Interaction logic for LoginWindow.xaml
 /// </summary>
-public partial class LoginWindow : Window
+public partial class LoginWindow
 {
     private static readonly IDiscoveryCache Cache = new DiscoveryCache(Constants.AuthUrl);
-    private DeviceAuthorizationResponse _authorizationResponse;
+    private DeviceAuthorizationResponse _authorizationResponse = new();
 
     public LoginWindow() => InitializeComponent();
 
-    public string AccessToken { get; set; }
-    public string ErrorMessage { get; set; }
+    public string AccessToken { get; private set; } = string.Empty;
+    public string ErrorMessage { get; private set; } = string.Empty;
 
     private void CloseWithError(string error)
     {
@@ -57,7 +57,7 @@ public partial class LoginWindow : Window
         }
 
         var hyperlink = new Hyperlink(new Run(_authorizationResponse.VerificationUri));
-        hyperlink.Click += (_, __) =>
+        hyperlink.Click += (_, _) =>
         {
             Process.Start(
                 new ProcessStartInfo
@@ -124,6 +124,6 @@ public partial class LoginWindow : Window
 
     private void OnUserCodeDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        Clipboard.SetText(UserCodeLabel.Content.ToString());
+        Clipboard.SetText(UserCodeLabel.Content.ToString() ?? string.Empty);
     }
 }

@@ -88,7 +88,7 @@ public static class Config
             new Client
             {
                 ClientId = "weather-api-mvc-client",
-                
+
                 // secret for authentication
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
@@ -116,7 +116,7 @@ public static class Config
             new Client
             {
                 ClientId = "bff-client",
-                
+
                 // secret for authentication
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
@@ -135,7 +135,7 @@ public static class Config
                     "weather-api"
                 }
             },
-            
+
             new Client
             {
                 ClientId = "wpf-client",
@@ -153,6 +153,32 @@ public static class Config
                     IdentityServerConstants.StandardScopes.Profile,
                     "weather-api"
                 }
+            },
+
+            new Client
+            {
+                ClientId = "auth-admin-client",
+
+                // secret for authentication
+                ClientSecrets = { new Secret("secret".Sha256()) },
+
+                AllowedGrantTypes = GrantTypes.Code,
+                RequireConsent = true,
+                RequirePkce = true,
+
+                // where to redirect to after login
+                RedirectUris = { "https://localhost:7211/signin-oidc" },
+
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { "https://localhost:7211/signout-callback-oidc" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                },
+
+                AllowOfflineAccess = true
             }
         };
 
@@ -166,7 +192,7 @@ public static class Config
 
             if (!context.Clients.Any())
             {
-                foreach (var client in Config.Clients)
+                foreach (var client in Clients)
                 {
                     context.Clients.Add(client.ToEntity());
                 }
@@ -175,7 +201,7 @@ public static class Config
 
             if (!context.IdentityResources.Any())
             {
-                foreach (var resource in Config.IdentityResources)
+                foreach (var resource in IdentityResources)
                 {
                     context.IdentityResources.Add(resource.ToEntity());
                 }
@@ -184,7 +210,7 @@ public static class Config
 
             if (!context.ApiScopes.Any())
             {
-                foreach (var resource in Config.ApiScopes)
+                foreach (var resource in ApiScopes)
                 {
                     context.ApiScopes.Add(resource.ToEntity());
                 }

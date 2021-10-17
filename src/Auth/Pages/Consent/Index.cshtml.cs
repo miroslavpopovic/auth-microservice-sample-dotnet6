@@ -54,15 +54,15 @@ public class IndexModel : PageModel
             {
                 // The client is native, so this change in how to
                 // return the response is for better UX for the end user.
-                return this.LoadingPage("/Redirect", result.RedirectUri);
+                return this.LoadingPage("/Redirect", result.RedirectUri!);
             }
 
-            return Redirect(result.RedirectUri);
+            return Redirect(result.RedirectUri!);
         }
 
         if (result.HasValidationError)
         {
-            ModelState.AddModelError(string.Empty, result.ValidationError);
+            ModelState.AddModelError(string.Empty, result.ValidationError!);
         }
 
         if (result.ShowView)
@@ -248,13 +248,13 @@ public class IndexModel : PageModel
             await _interaction.GrantConsentAsync(request, grantedConsent);
 
             // indicate that's it ok to redirect back to authorization endpoint
-            result.RedirectUri = model.ReturnUrl;
+            result.RedirectUri = model?.ReturnUrl;
             result.Client = request.Client;
         }
         else
         {
             // we need to redisplay the consent UI
-            result.ViewModel = await BuildViewModelAsync(model.ReturnUrl, model);
+            result.ViewModel = await BuildViewModelAsync(model?.ReturnUrl!, model);
         }
 
         return result;
