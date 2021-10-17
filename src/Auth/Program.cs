@@ -6,7 +6,14 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder();
+builder.WebHost.ConfigureAppConfiguration((context, configurationBuilder) =>
+{
+    if (context.HostingEnvironment.IsEnvironment("Docker"))
+    {
+        configurationBuilder.AddUserSecrets(typeof(Config).Assembly);
+    }
+});
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("auth-db");

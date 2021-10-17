@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer;
+﻿using Auth.Data;
+using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Duende.IdentityServer.Models;
@@ -184,38 +185,39 @@ public static class Config
 
     public static void InitializeDatabase(IApplicationBuilder app)
     {
-        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
+        using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
+
+        var appContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        appContext.Database.Migrate();
+
+        var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+        context.Database.Migrate();
+
+        if (!context.Clients.Any())
         {
-            var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-
-            context.Database.Migrate();
-
-            if (!context.Clients.Any())
+            foreach (var client in Clients)
             {
-                foreach (var client in Clients)
-                {
-                    context.Clients.Add(client.ToEntity());
-                }
-                context.SaveChanges();
+                context.Clients.Add(client.ToEntity());
             }
+            context.SaveChanges();
+        }
 
-            if (!context.IdentityResources.Any())
+        if (!context.IdentityResources.Any())
+        {
+            foreach (var resource in IdentityResources)
             {
-                foreach (var resource in IdentityResources)
-                {
-                    context.IdentityResources.Add(resource.ToEntity());
-                }
-                context.SaveChanges();
+                context.IdentityResources.Add(resource.ToEntity());
             }
+            context.SaveChanges();
+        }
 
-            if (!context.ApiScopes.Any())
+        if (!context.ApiScopes.Any())
+        {
+            foreach (var resource in ApiScopes)
             {
-                foreach (var resource in ApiScopes)
-                {
-                    context.ApiScopes.Add(resource.ToEntity());
-                }
-                context.SaveChanges();
+                context.ApiScopes.Add(resource.ToEntity());
             }
+            context.SaveChanges();
         }
     }
 }

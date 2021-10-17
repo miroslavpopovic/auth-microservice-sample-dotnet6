@@ -22,11 +22,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.WeatherApi.MvcClien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.WeatherSummaryApi", "src\Samples.WeatherSummaryApi\Samples.WeatherSummaryApi.csproj", "{96DF48B7-F38B-460C-888A-3F9361E68CA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.WeatherApi.JavaScriptBffClient", "src\Samples.WeatherApi.JavaScriptBffClient\Samples.WeatherApi.JavaScriptBffClient.csproj", "{27244AA5-1040-4DF7-B581-8062F07ABD9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.WeatherApi.JavaScriptBffClient", "src\Samples.WeatherApi.JavaScriptBffClient\Samples.WeatherApi.JavaScriptBffClient.csproj", "{27244AA5-1040-4DF7-B581-8062F07ABD9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.WeatherApi.WpfClient", "src\Samples.WeatherApi.WpfClient\Samples.WeatherApi.WpfClient.csproj", "{571EEDA9-3129-4FD4-BA63-60CCFF452854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.WeatherApi.WpfClient", "src\Samples.WeatherApi.WpfClient\Samples.WeatherApi.WpfClient.csproj", "{571EEDA9-3129-4FD4-BA63-60CCFF452854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Admin", "src\Auth.Admin\Auth.Admin.csproj", "{84F578FD-5EB2-4442-89A5-DC629B9891CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Admin", "src\Auth.Admin\Auth.Admin.csproj", "{84F578FD-5EB2-4442-89A5-DC629B9891CA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3DF361C5-F024-4C15-881F-61A51D854D76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84F578FD-5EB2-4442-89A5-DC629B9891CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DF361C5-F024-4C15-881F-61A51D854D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DF361C5-F024-4C15-881F-61A51D854D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DF361C5-F024-4C15-881F-61A51D854D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DF361C5-F024-4C15-881F-61A51D854D76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
