@@ -79,8 +79,9 @@ builder.Services.AddCors(
             "default", policy =>
             {
                 policy
-                    .WithOrigins("https://localhost:7212", "https://localhost:7213")
-                    //.WithOrigins(Configuration.GetServiceUri("aurelia-client")!.ToString().TrimEnd('/'))
+                    .WithOrigins(
+                        builder.Configuration.GetServiceUri("weather-api")!.ToString().TrimEnd('/'),
+                        builder.Configuration.GetServiceUri("weather-summary-api")!.ToString().TrimEnd('/'))
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
@@ -88,7 +89,7 @@ builder.Services.AddCors(
 
 var app = builder.Build();
 
-Config.InitializeDatabase(app);
+Config.InitializeDatabase(app, app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

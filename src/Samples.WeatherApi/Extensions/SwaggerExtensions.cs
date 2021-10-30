@@ -11,7 +11,7 @@ namespace Samples.WeatherApi.Extensions
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Samples.WeatherApi", Version = "v1" });
 
-                string issuer = configuration.GetValue<string>("Auth:Issuer");
+                var issuer = configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
 
                 options.AddSecurityDefinition("oauth2",
                     new OpenApiSecurityScheme

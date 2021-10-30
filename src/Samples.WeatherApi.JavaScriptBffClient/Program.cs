@@ -25,11 +25,16 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
-    options.Authority = "https://localhost:7210";
+    options.Authority = builder.Configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
 
     options.ClientId = "bff-client";
     options.ClientSecret = "secret";
     options.ResponseType = "code";
+
+    options.BackchannelHttpHandler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
 
     options.SaveTokens = true;
 
@@ -64,7 +69,8 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapBffManagementEndpoints();
 
-    endpoints.MapRemoteBffApiEndpoint("/remote", "https://localhost:7212")
+    endpoints.MapRemoteBffApiEndpoint(
+            "/remote", builder.Configuration.GetServiceUri("weather-api")!.ToString().TrimEnd('/'))
         .RequireAccessToken(TokenType.User);
 });
 

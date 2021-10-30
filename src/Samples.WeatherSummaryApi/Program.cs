@@ -12,7 +12,12 @@ builder.Services.AddSwagger(builder.Configuration);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        options.Authority = builder.Configuration.GetValue<string>("Auth:Issuer");
+        options.Authority = builder.Configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
+
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -35,15 +40,14 @@ builder.Services
         "weather-api-client",
         client =>
         {
-            //client.BaseAddress = new Uri($"{Configuration.GetServiceUri("weather-api")}weatherforecast");
-            client.BaseAddress = new Uri("https://localhost:7212/weatherforecast");
+            client.BaseAddress = new Uri($"{builder.Configuration.GetServiceUri("weather-api")}weatherforecast");
+        })
+    .ConfigurePrimaryHttpMessageHandler(
+        () => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
-    //.ConfigurePrimaryHttpMessageHandler(
-    //    () => new HttpClientHandler
-    //    {
-    //        ServerCertificateCustomValidationCallback =
-    //            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-    //    });
 
 var app = builder.Build();
 

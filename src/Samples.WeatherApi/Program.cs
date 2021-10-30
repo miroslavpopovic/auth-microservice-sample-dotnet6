@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Samples.WeatherApi.Controllers;
 using Samples.WeatherApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,12 @@ builder.Services.AddSwagger(builder.Configuration);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        options.Authority = builder.Configuration.GetValue<string>("Auth:Issuer");
+        options.Authority = builder.Configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
+
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {

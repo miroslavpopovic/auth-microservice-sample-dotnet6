@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{E68F8C19-A
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
+		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.WeatherApi", "src\Samples.WeatherApi\Samples.WeatherApi.csproj", "{D22E3658-B7A8-43E8-A6B9-B3D9E896783F}"

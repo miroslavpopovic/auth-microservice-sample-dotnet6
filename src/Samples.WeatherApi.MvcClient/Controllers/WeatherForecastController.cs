@@ -14,14 +14,10 @@ namespace Samples.WeatherApi.MvcClient.Controllers
 
         public WeatherForecastController(IHttpClientFactory clientFactory, IConfiguration configuration)
         {
-            //_weatherForecastApiUrl =
-            //    $"{configuration.GetServiceUri("weather-api")}weatherforecast";
-            //_weatherSummaryApiUrl =
-            //    $"{configuration.GetServiceUri("weather-summary-api")}weathersummary";
             _weatherForecastApiUrl =
-                "https://localhost:7212/weatherforecast";
+                $"{configuration.GetServiceUri("weather-api")}weatherforecast";
             _weatherSummaryApiUrl =
-                "https://localhost:7213/weathersummary";
+                $"{configuration.GetServiceUri("weather-summary-api")}weathersummary";
 
             _forecastClient = clientFactory.CreateClient("weather-api-client");
             _summaryClient = clientFactory.CreateClient("weather-summary-api-client");

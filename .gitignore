@@ -356,3 +356,5 @@ src/Auth/wwwroot/images/profile/
 
 # Temporary remove Aurelia Client
 src/Samples.WeatherApi.AureliaClient/
+
+src/Auth/keys/

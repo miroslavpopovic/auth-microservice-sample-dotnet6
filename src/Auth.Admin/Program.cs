@@ -24,11 +24,16 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
-        options.Authority = "https://localhost:7210";
+        options.Authority = builder.Configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
 
         options.ClientId = "auth-admin-client";
         options.ClientSecret = "secret";
         options.ResponseType = "code";
+
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
 
         options.SaveTokens = true;
 

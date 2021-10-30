@@ -12,8 +12,8 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("weather-api", "Weather API"),
-            new ApiScope("weather-summary-api", "Weather Summary API")
+            new("weather-api", "Weather API"),
+            new("weather-summary-api", "Weather Summary API")
         };
 
     public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>
@@ -22,11 +22,16 @@ public static class Config
         new IdentityResources.Profile()
     };
 
-    public static IEnumerable<Client> Clients =>
-        new List<Client>
+    public static IEnumerable<Client> GetClients(IConfiguration configuration)
+    {
+        var authAdminUrl = configuration.GetServiceUri("auth-admin")!.ToString();
+        var mvcClientUrl = configuration.GetServiceUri("mvc-client")!.ToString();
+        var bffClientUrl = configuration.GetServiceUri("javascriptbff-client")!.ToString();
+
+        return new List<Client>
         {
             // Machine to machine client
-            new Client
+            new()
             {
                 ClientId = "weather-api-console-client",
 
@@ -41,7 +46,7 @@ public static class Config
             },
 
             // Machine to machine client
-            new Client
+            new()
             {
                 ClientId = "weather-api-worker-client",
 
@@ -56,7 +61,7 @@ public static class Config
             },
 
             // Machine to machine client
-            new Client
+            new()
             {
                 ClientId = "weather-summary-api-console-client",
 
@@ -71,7 +76,7 @@ public static class Config
             },
 
             // Machine to machine client
-            new Client
+            new()
             {
                 ClientId = "weather-apis-client",
 
@@ -86,7 +91,7 @@ public static class Config
             },
 
             // Interactive web client that's using ASP.NET Core MVC
-            new Client
+            new()
             {
                 ClientId = "weather-api-mvc-client",
 
@@ -98,10 +103,10 @@ public static class Config
                 RequirePkce = true,
 
                 // where to redirect to after login
-                RedirectUris = { "https://localhost:7214/signin-oidc" },
+                RedirectUris = { $"{mvcClientUrl}signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:7214/signout-callback-oidc" },
+                PostLogoutRedirectUris = { $"{mvcClientUrl}signout-callback-oidc" },
 
                 AllowedScopes =
                 {
@@ -114,7 +119,7 @@ public static class Config
                 AllowOfflineAccess = true
             },
 
-            new Client
+            new()
             {
                 ClientId = "bff-client",
 
@@ -124,10 +129,10 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 // where to redirect to after login
-                RedirectUris = { "https://localhost:7215/signin-oidc" },
+                RedirectUris = { $"{bffClientUrl}signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:7215/signout-callback-oidc" },
+                PostLogoutRedirectUris = { $"{bffClientUrl}signout-callback-oidc" },
 
                 AllowedScopes =
                 {
@@ -137,7 +142,7 @@ public static class Config
                 }
             },
 
-            new Client
+            new()
             {
                 ClientId = "wpf-client",
                 ClientName = "WPF Client",
@@ -156,7 +161,7 @@ public static class Config
                 }
             },
 
-            new Client
+            new()
             {
                 ClientId = "auth-admin-client",
 
@@ -168,10 +173,10 @@ public static class Config
                 RequirePkce = true,
 
                 // where to redirect to after login
-                RedirectUris = { "https://localhost:7211/signin-oidc" },
+                RedirectUris = { $"{authAdminUrl}signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:7211/signout-callback-oidc" },
+                PostLogoutRedirectUris = { $"{authAdminUrl}signout-callback-oidc" },
 
                 AllowedScopes =
                 {
@@ -182,8 +187,9 @@ public static class Config
                 AllowOfflineAccess = true
             }
         };
+    }
 
-    public static void InitializeDatabase(IApplicationBuilder app)
+    public static void InitializeDatabase(IApplicationBuilder app, IConfiguration configuration)
     {
         using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
 
@@ -195,7 +201,7 @@ public static class Config
 
         if (!context.Clients.Any())
         {
-            foreach (var client in Clients)
+            foreach (var client in GetClients(configuration))
             {
                 context.Clients.Add(client.ToEntity());
             }

@@ -16,11 +16,16 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
-        options.Authority = "https://localhost:7210";
+        options.Authority = builder.Configuration.GetServiceUri("auth")!.ToString().TrimEnd('/');
 
         options.ClientId = "weather-api-mvc-client";
         options.ClientSecret = "secret";
         options.ResponseType = "code";
+
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
 
         options.SaveTokens = true;
 
@@ -42,8 +47,7 @@ builder.Services
             options.Client.Clients.Add(
                 "auth", new ClientCredentialsTokenRequest
                 {
-                    //Address = $"{Configuration.GetServiceUri("auth")}connect/token",
-                    Address = "https://localhost:7210/connect/token",
+                    Address = $"{builder.Configuration.GetServiceUri("auth")}connect/token",
                     ClientId = "weather-apis-client",
                     ClientSecret = "secret",
                     Scope = "weather-api"
@@ -71,30 +75,28 @@ builder.Services
         "weather-api-client",
         configureClient: client =>
         {
-            //client.BaseAddress = new Uri(Configuration.GetServiceUri("weather-api")!.ToString());
-            client.BaseAddress = new Uri("https://localhost:7212/");
+            client.BaseAddress = new Uri(builder.Configuration.GetServiceUri("weather-api")!.ToString());
+        })
+    .ConfigurePrimaryHttpMessageHandler(
+        () => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
-    //.ConfigurePrimaryHttpMessageHandler(
-    //    () => new HttpClientHandler
-    //    {
-    //        ServerCertificateCustomValidationCallback =
-    //            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-    //    });
 
 builder.Services
     .AddClientAccessTokenHttpClient(
         "weather-summary-api-client",
         configureClient: client =>
         {
-            //client.BaseAddress = new Uri(Configuration.GetServiceUri("weather-summary-api")!.ToString());
-            client.BaseAddress = new Uri("https://localhost:7213/");
+            client.BaseAddress = new Uri(builder.Configuration.GetServiceUri("weather-summary-api")!.ToString());
+        })
+    .ConfigurePrimaryHttpMessageHandler(
+        () => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         });
-    //.ConfigurePrimaryHttpMessageHandler(
-    //    () => new HttpClientHandler
-    //    {
-    //        ServerCertificateCustomValidationCallback =
-    //            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-    //    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
