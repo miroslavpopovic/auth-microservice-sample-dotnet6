@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder();
-builder.WebHost.ConfigureAppConfiguration((context, configurationBuilder) =>
+if (builder.Environment.IsEnvironment("Docker"))
 {
-    if (context.HostingEnvironment.IsEnvironment("Docker"))
-    {
-        configurationBuilder.AddUserSecrets(typeof(Config).Assembly);
-    }
-});
+    builder.Configuration.AddUserSecrets(typeof(Config).Assembly);
+}
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("auth-db");
