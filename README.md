@@ -4,7 +4,7 @@ A sample code for a talk "Auth microservice with ASP.NET Core Identity and Duend
 
 ## Presentations
 
-*TODO: Add PowerPoint presentation links*
+- [November 2021, European Cloud Summit](2021-11-cloudsummit-building-auth-microservice.pptx)
 
 ## Projects
 
