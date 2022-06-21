@@ -58,27 +58,30 @@ If you are running the project with Project Tye or `docker-compose` (see below),
 
 However, if running via IISExpress or Kestrel, the default connection string, defined in `appsettings.json` file of both Auth and Auth.Admin projects, assumes that you have SQL Server installed locally, as the default (non-named) instance, and that you will be using `AuthService` as the database. If you have a named instance of SQL Server, or a non-local instance, or need to use another database name, override the setting in the user secrets for both projects:
 
-    "ConnectionStrings": {
-      "auth-db": "Server=.;Database=AuthService;Trusted_Connection=True;MultipleActiveResultSets=true"
-    }
+```json
+"ConnectionStrings": {
+  "auth-db": "Server=.;Database=AuthService;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
 
 ### Google and IdentityServer Demo external providers
 
 You also need to modify the user secrets for `Auth` project. It should look like this (provide correct [client id and client secret](https://console.cloud.google.com/apis/credentials) for Google auth):
 
-    {
-      // ... other settings
-      "Providers": {
-        "Google": {
-          "ClientId": "<google_app_client_id>",
-          "ClientSecret": "<google_app_client_secret>"
-        },
-        "IdentityServerDemo": {
-          "ClientId": "native.code",
-          "ClientSecret": "secret"
-        }
-      }
+```json
+{
+  "Providers": {
+    "Google": {
+      "ClientId": "<google_app_client_id>",
+      "ClientSecret": "<google_app_client_secret>"
+    },
+    "IdentityServerDemo": {
+      "ClientId": "native.code",
+      "ClientSecret": "secret"
     }
+  }
+}
+```
 
 Alternatively, just remove Google (and/or IdentityServer Demo) auth from `Startup` class of Auth project.
 
@@ -86,11 +89,15 @@ Alternatively, just remove Google (and/or IdentityServer Demo) auth from `Startu
 
 If you running via IISExpress or Kestrel, and want to have email sending working, you either need to have a local SMTP server, or modify the SMTP settings in `appsettings.json` file of Auth project. The easiest way to have local SMTP server is to use [smtp4dev](https://github.com/rnwood/smtp4dev). Install it with:
 
-    dotnet tool install -g Rnwood.Smtp4dev
+```shell
+dotnet tool install -g Rnwood.Smtp4dev
+```
 
 Then run it with:
 
-    smtp4dev
+```shell
+smtp4dev
+```
 
 It will now capture all emails sent from Auth project. You can see them on https://localhost:5001/.
 
@@ -106,11 +113,15 @@ The purpose of Project Tye is to help with development and deployment of .NET mi
 
 First, install the [latest version](https://www.nuget.org/packages/Microsoft.Tye) of Project Tye
 
-    dotnet tool install --global Microsoft.Tye --version <version>
+```shell
+dotnet tool install --global Microsoft.Tye --version <version>
+```
 
 Then you can just run Project Tye from the root of the repository.
 
-    tye run
+```shell
+tye run
+```
 
 It will run all the projects and services defined in `./tye.yaml` and serve a dashboard on http://localhost:8000/. From the Tye Dashboard, you can see all running services, open URLs in browser, view logs, etc.
 
@@ -122,19 +133,23 @@ If using Visual Studio 2019+, you can open `Auth.sln` solution. To run multiple 
 
 If running from the command line, you can start the projects you need from the root folder, with:
 
-    dotnet run --project src\Auth\Auth.csproj
-    dotnet run --project src\Auth.Admin\Auth.Admin.csproj
-    dotnet run --project src\Samples.WeatherApi\Samples.WeatherApi.csproj
-    dotnet run --project src\Samples.WeatherSummaryApi\Samples.WeatherSummaryApi.csproj
-    dotnet run --project src\Samples.WeatherApi.JavaScriptBffClient\Samples.WeatherApi.JavaScriptBffClient.csproj
-    dotnet run --project src\Samples.WeatherApi.ConsoleClient\Samples.WeatherApi.ConsoleClient.csproj
-    dotnet run --project src\Samples.WeatherApi.MvcClient\Samples.WeatherApi.MvcClient.csproj
-    dotnet run --project src\Samples.WeatherApi.WorkerClient\Samples.WeatherApi.WorkerClient.csproj
-    dotnet run --project src\Samples.WeatherApi.WpfClient\Samples.WeatherApi.WpfClient.csproj
+```shell
+dotnet run --project src\Auth\Auth.csproj
+dotnet run --project src\Auth.Admin\Auth.Admin.csproj
+dotnet run --project src\Samples.WeatherApi\Samples.WeatherApi.csproj
+dotnet run --project src\Samples.WeatherSummaryApi\Samples.WeatherSummaryApi.csproj
+dotnet run --project src\Samples.WeatherApi.JavaScriptBffClient\Samples.WeatherApi.JavaScriptBffClient.csproj
+dotnet run --project src\Samples.WeatherApi.ConsoleClient\Samples.WeatherApi.ConsoleClient.csproj
+dotnet run --project src\Samples.WeatherApi.MvcClient\Samples.WeatherApi.MvcClient.csproj
+dotnet run --project src\Samples.WeatherApi.WorkerClient\Samples.WeatherApi.WorkerClient.csproj
+dotnet run --project src\Samples.WeatherApi.WpfClient\Samples.WeatherApi.WpfClient.csproj
+```
 
 If on Windows, there's a convenient PowerShell script to run all web projects at once:
 
-    .\run-web-projects.ps1
+```shell
+.\run-web-projects.ps1
+```
 
 ### Using Docker
 
@@ -142,8 +157,10 @@ The solution is ready to run with Docker too. It has `Dockerfile` files for each
 
 Depending on your machine setup, you might need to create or export a dev certificate:
 
-    dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p password
-    dotnet dev-certs https --trust
+```shell
+dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p password
+dotnet dev-certs https --trust
+```
 
 While running all projects and communication between them was easy without Docker since we were using same `localhost`. Running in Docker is a bit tricky since we basically have multiple machines involved and each has its own `localhost` DNS entry. We can use internal Docker network, and refer to each machine through its DNS name, assigned by Docker Compose, but that would work only for machine to machine communication. When we add browser on the host to the mix, things start to fall apart. I.e. if we use `htpps://auth` as Authority in `auth-admin`, it will successfully retrieve OIDC config file, but will redirect the host browser to that address too, for login, and browser will fail, since host is not the part of the same network.
 
@@ -154,6 +171,20 @@ The way it is solved in this repository is by defining a new DNS entry (similar 
 All web projects have `appsettings.Docker.json` files with settings overrides for Docker environment.
 
 To run everything, either run `docker-compose` project from Visual Studio, or run `docker-compose up` from the command line.
+
+## Upgrading to the latest Duende IdentityServer
+
+Check the upgrade guides on https://docs.duendesoftware.com/identityserver/v6/upgrades/.
+
+The upgrade usually means that the database needs a schema upgrade. To upgrade the database schema, run the following from the command line:
+
+```shell
+cd ./src/Auth
+dotnet ef migrations add UpgradeToLatestDuendeIdentityServer --context ConfigurationDbContext --output-dir ./Data/ConfigurationMigrations
+
+# if there are upgrades, run the database update operation
+dotnet ef database update --context ConfigurationDbContext
+```
 
 ## License
 

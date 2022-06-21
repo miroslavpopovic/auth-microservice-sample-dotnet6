@@ -15,8 +15,6 @@ if (builder.Environment.IsEnvironment("Docker"))
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("auth-db");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, optionsBuilder =>
     {
         optionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);

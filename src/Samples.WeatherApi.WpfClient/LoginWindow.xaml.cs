@@ -47,6 +47,7 @@ public partial class LoginWindow
             new DeviceAuthorizationRequest
             {
                 Address = disco.DeviceAuthorizationEndpoint,
+                Scope = Constants.Scope,
                 ClientId = Constants.ClientId
             });
 
