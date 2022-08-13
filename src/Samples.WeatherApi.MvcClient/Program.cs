@@ -37,9 +37,10 @@ builder.Services.AddAuthentication(options =>
         options.GetClaimsFromUserInfoEndpoint = true;
     });
 
-
 // Register and configure Token Management and Weather API HTTP clients for DI
 // This is using a separate Client to access API using Client Credentials
+// TODO: Replace this with Duende.AccessTokenManagement once it's out of the preview phase
+// https://blog.duendesoftware.com/posts/20220804_datm/
 builder.Services
     .AddAccessTokenManagement(
         options =>

@@ -6,6 +6,8 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         // Configure access token management services with retry logic
+        // TODO: Replace this with Duende.AccessTokenManagement once it's out of the preview phase
+        // https://blog.duendesoftware.com/posts/20220804_datm/
         services
             .AddAccessTokenManagement(
                 options =>
