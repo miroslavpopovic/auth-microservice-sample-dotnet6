@@ -6,6 +6,7 @@ As not everyone is able to fulfill the [pricing](https://duendesoftware.com/prod
 
 ## Presentations
 
+- [August 2022, .NET Day Switzerland](2022-08-dotnetday-building-auth-microservice.pptx)
 - [November 2021, European Cloud Summit](2021-11-cloudsummit-building-auth-microservice.pptx)
 
 ## Projects
